@@ -29,21 +29,21 @@ namespace GestionBancariaAppNS
 
         public double ObtenerSaldo() { return saldo; }
 
-        public int RealizarReintegro(double cantidad) 
+        public double RealizarReintegro(double cantidad) 
         {
             if (cantidad <= 0)
                 return ERR_CANTIDAD_NO_VALIDA;
             if (saldo < cantidad)
                 return ERR_SALDO_INSUFICIENTE;
-            saldo += cantidad;
-            return 0;
+            saldo -= cantidad;
+            return saldo;
         }
 
-        public int RealizarIngreso(double cantidad) {
-            if (cantidad > 0)
+        public double RealizarIngreso(double cantidad) {
+            if (cantidad <= 0)
                 return ERR_CANTIDAD_NO_VALIDA;
-            saldo -= cantidad;
-            return 0;
+            saldo += cantidad;
+            return saldo;
         }
 
         private void btOperar_Click(object sender, EventArgs e)
@@ -51,7 +51,7 @@ namespace GestionBancariaAppNS
             double cantidad = Convert.ToDouble(txtCantidad.Text); // Cogemos la cantidad del TextBox y la pasamos a número
             if (rbReintegro.Checked)
             {
-                int respuesta = RealizarReintegro(cantidad);
+                double respuesta = RealizarReintegro(cantidad);
                 if (respuesta == ERR_SALDO_INSUFICIENTE)
                     MessageBox.Show("No se ha podido realizar la operación (¿Saldo insuficiente?)");
                 else
